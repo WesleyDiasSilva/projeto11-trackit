@@ -1,7 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
+import { STYLES } from '../constants/styles'
 import Navbar from '../components/Navbar'
-import ContainerApp from '../containers/ContainerApp'
+import Footer from '../components/Footer'
+
 
 function HabitsPage() {
 
@@ -10,8 +12,19 @@ function HabitsPage() {
     <>
       <Navbar imgPerfil={img}/>
       <ContainerHabits>
-        Opa
+        <ContainerHeaderHabits>
+          <MyHabits styles={STYLES.titleMyHabits}>
+            Meus Hábitos
+          </MyHabits>
+          <ButtonNewHabits styles={STYLES.button}>
+            +
+          </ButtonNewHabits>
+        </ContainerHeaderHabits>
+        <Info styles={STYLES.infoHabits}>
+          Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!
+          </Info>
       </ContainerHabits>
+      <Footer / >
     </>
     
   )
@@ -23,5 +36,33 @@ const ContainerHabits = styled.div`
   width: 100%;
   margin-top: 70px;
 `
+const MyHabits = styled.h2`
+  color: ${props => props.styles.background};
+  font-family: ${props => props.styles.fontFamily};
+  font-size: ${props => props.styles.fontSize};
+`
 
+const ContainerHeaderHabits = styled.div`
+  padding: 20px 10px 12px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+const ButtonNewHabits = styled.button`
+  width: 40px;
+  height: 35px;
+  background-color: ${props => props.styles.background};
+  border: none;
+  border-radius: ${props => props.styles.borderRadius};
+  font-size: 26px;
+  color: ${props => props.styles.color};
+  font-family: ${props => props.styles.fontFamily};
+  font-weight: 700;
+`
 
+const Info = styled.div`
+  padding: 0 10px;
+  color: ${props => props.styles.color};
+  font-family: ${props => props.styles.fontFamily};
+  font-size: ${props => props.styles.fontSize};
+`

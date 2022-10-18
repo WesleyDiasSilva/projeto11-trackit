@@ -13,5 +13,15 @@ export const STYLES = {
   },
   navbar: {
     background: '#126BA5'
+  },
+  titleMyHabits: {
+    background: '#126BA5',
+    fontFamily: 'Lexend Deca',
+    fontSize: '22px'
+  },
+  infoHabits: {
+    color: '#666666',
+    fontFamily: 'Lexend Deca',
+    fontSize: '18px'
   }
 }
