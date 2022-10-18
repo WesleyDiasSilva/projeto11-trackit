@@ -7,6 +7,11 @@ export const STYLES = {
     fontSize: '20px'
   },
   input:{
-
+    focus: {
+      color: ''
+    }
+  },
+  navbar: {
+    background: '#126BA5'
   }
 }
