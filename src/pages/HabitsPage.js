@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { STYLES } from '../constants/styles'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import TitleForPage from '../components/TitleForPage'
 
 
 function HabitsPage() {
@@ -13,9 +14,10 @@ function HabitsPage() {
       <Navbar imgPerfil={img}/>
       <ContainerHabits>
         <ContainerHeaderHabits>
-          <MyHabits styles={STYLES.titleMyHabits}>
-            Meus Hábitos
-          </MyHabits>
+          <TitleForPage >
+            <span>Meus Hábitos</span>
+            <span></span>
+          </TitleForPage>
           <ButtonNewHabits styles={STYLES.button}>
             +
           </ButtonNewHabits>
@@ -36,11 +38,7 @@ const ContainerHabits = styled.div`
   width: 100%;
   margin-top: 70px;
 `
-const MyHabits = styled.h2`
-  color: ${props => props.styles.background};
-  font-family: ${props => props.styles.fontFamily};
-  font-size: ${props => props.styles.fontSize};
-`
+
 
 const ContainerHeaderHabits = styled.div`
   padding: 20px 10px 12px 10px;

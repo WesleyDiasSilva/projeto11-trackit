@@ -3,10 +3,10 @@ import styled from 'styled-components'
 
 
 
-function Form({children}) {
+function Form(props) {
   return (
-    <FormStyle>
-      {children}
+    <FormStyle onSubmit={(e) => e.preventDefault()}> 
+      {props.children}
     </FormStyle>
   )
 }

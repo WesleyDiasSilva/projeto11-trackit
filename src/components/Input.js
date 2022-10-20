@@ -2,9 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import {STYLES} from '../constants/styles'
 
-function Input({type, placeholder}) {
+function Input({type, placeholder, status, value, setValue}) {
   return (
-    <InputStyle styles={STYLES.input} type={type} placeholder={placeholder}/>
+    <InputStyle onChange={(e) => setValue(e.target.value)} value={value} disabled={status} styles={STYLES.input} type={type} placeholder={placeholder}/>
   )
 }
 

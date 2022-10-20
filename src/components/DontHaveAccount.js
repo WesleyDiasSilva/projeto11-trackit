@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import {STYLES} from '../constants/styles'
 
 function DontHaveAccount({children}) {
-  console.log(STYLES.button)
   return (
     <Text styles={STYLES.button}>
       {children}

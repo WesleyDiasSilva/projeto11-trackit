@@ -1,11 +1,23 @@
 import React from 'react'
 import styled from 'styled-components'
 import {STYLES} from '../constants/styles'
+import { Comment } from "react-loader-spinner";
 
-function Button ({children}) {
+function Button (props ) {
   return (
-    <ButtonStyle styles={STYLES.button}>
-      {children}
+    <ButtonStyle onClick={props.onClick} styles={STYLES.button}>
+      {props.loading ? <Comment
+          visible={true}
+          height="50"
+          width="150"
+          ariaLabel="comment-loading"
+          wrapperStyle={{}}
+          wrapperClass="comment-wrapper"
+          color="#fff"
+          backgroundColor="#52B6FF"
+        /> 
+        :
+        props.children}
     </ButtonStyle>
   )
 }
