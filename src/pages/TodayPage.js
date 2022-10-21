@@ -1,12 +1,32 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import Footer from '../components/Footer'
 import HabitsToday from '../components/HabitsToday'
 import Navbar from '../components/Navbar'
 import TitleForPage from '../components/TitleForPage'
+import { UserContext } from '../Contexts/UserContext'
+
 
 function TodayPage() {
-  const img = "https://img.elo7.com.br/product/original/3254FDB/bob-esponja-e-patrick-em-camadas-arquivo-de-corte-personalizados-bob-esponja-e-patrick.jpg"
+
+  const [habitsToday, setHabitsToday] = React.useState([])
+
+  const User = React.useContext(UserContext)
+
+  useEffect(() => {
+    axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', {
+      headers : {Authorization: 'Bearer ' + User.user.user.token}})
+    .then((res) => {
+      console.log(res.data)
+      setHabitsToday(res.data)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }, [])
+
+  const img = User.user.user.image
 
   return (
     <>
@@ -18,10 +38,7 @@ function TodayPage() {
         <span>Nenhum hábito concluído ainda</span>
        </TitleForPage>
      </ContainerHeaderToday>
-     <HabitsToday />
-     <HabitsToday />
-     <HabitsToday />
-     <HabitsToday />
+     {habitsToday.length > 0 ? habitsToday.map(h => <HabitsToday key={h.name} habit={h} />) : ''}
      </ContainerToday>
      <Footer />
     </>
@@ -37,4 +54,6 @@ const ContainerHeaderToday = styled.div`
 const ContainerToday = styled.div`
   margin-top: 70px;
   width: 100%;
+  height: 100vh;
+  background-color: #F2F2F2;
 `

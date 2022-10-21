@@ -5,14 +5,16 @@ import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
 import TitleForPage from '../components/TitleForPage'
 import 'react-calendar/dist/Calendar.css';
+import { UserContext } from '../Contexts/UserContext'
+
 
 function HistoryPage() {
 
-  const img = "https://img.elo7.com.br/product/original/3254FDB/bob-esponja-e-patrick-em-camadas-arquivo-de-corte-personalizados-bob-esponja-e-patrick.jpg"
+  const User = React.useContext(UserContext)
 
   return (
     <>
-     <Navbar imgPerfil={img}/> 
+     <Navbar imgPerfil={User.user.user.image}/> 
      <ContainerHistory>
        <ContainerHeaderHistory>
          <TitleForPage>

@@ -4,10 +4,13 @@ import logo from '../assets/imgs/TrackIt.svg'
 import {STYLES} from '../constants/styles'
 
 function Navbar({imgPerfil}) {
+
+  const imageDefault = 'https://thumbs.dreamstime.com/b/vetor-de-%C3%ADcone-perfil-do-avatar-padr%C3%A3o-foto-usu%C3%A1rio-m%C3%ADdia-social-183042379.jpg'
+
   return (
     <NavbarStyles styles={STYLES.navbar}>
       <Logo src={logo} alt='Logo do trackit'/>
-      <ImgPerfil src={imgPerfil} alt='Imagem de Perfil do usuário' />
+      <ImgPerfil src={imgPerfil ? imgPerfil : imageDefault} alt='Imagem de Perfil do usuário' />
     </NavbarStyles>
   )
 }

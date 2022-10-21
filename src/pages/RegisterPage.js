@@ -12,9 +12,9 @@ function RegisterPage() {
 
   const [input, setInput] = React.useState(false);
   const [email, setEmail] = React.useState('')
-  const [senha, setSenha] = React.useState('')
-  const [nome, setNome] = React.useState('')
-  const [foto, setFoto] = React.useState('')
+  const [password, setPassword] = React.useState('')
+  const [name, setName] = React.useState('')
+  const [image, setImage] = React.useState('')
 
   const navigate = useNavigate()
 
@@ -22,9 +22,9 @@ function RegisterPage() {
     setInput(true);
     const body = {
       email: email,
-      name: nome,
-      image:"https://img.elo7.com.br/product/original/3254FDB/bob-esponja-e-patrick-em-camadas-arquivo-de-corte-personalizados-bob-esponja-e-patrick.jpg",
-      password: senha,
+      name: name,
+      image: image,
+      password: password,
     }
 
     axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up", body)
@@ -46,9 +46,9 @@ function RegisterPage() {
         <ContainerLogo />
         <Form>
           <Input value={email} setValue={setEmail} status={input} type='text' placeholder='Email'/>
-          <Input value={senha} setValue={setSenha} status={input} type='password' placeholder='Senha'/>
-          <Input value={nome} setValue={setNome} status={input} type='text' placeholder='Nome'/>
-          <Input value={foto} setValue={setFoto} status={input} type='text' placeholder='Foto'/>
+          <Input value={password} setValue={setPassword} status={input} type='password' placeholder='Senha'/>
+          <Input value={name} setValue={setName} status={input} type='text' placeholder='Nome'/>
+          <Input value={image} setValue={setImage} status={input} type='text' placeholder='Foto'/>
           <Button onClick={register}>Cadastrar</Button>
         </Form>
         <Link to='/'>

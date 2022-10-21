@@ -7,6 +7,7 @@ import Form from "../components/Form";
 import Input from "../components/Input";
 import ContainerApp from "../containers/ContainerApp";
 import ContainerLogo from "../containers/ContainerLogo";
+import { UserContext } from "../Contexts/UserContext";
 
 
 function LoginPage() {
@@ -17,6 +18,8 @@ function LoginPage() {
   const [password, setPassword] = React.useState('')
 
   const navigate = useNavigate()
+
+  const User = React.useContext(UserContext);
 
   function login(){
     setInput(true)
@@ -29,6 +32,7 @@ function LoginPage() {
 
     axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login',body)
     .then(res => {
+      User.setUser({user: res.data})
       navigate('/hoje')
       setLoading(false)
       setInput(false)

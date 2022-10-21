@@ -2,11 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import check from "../assets/imgs/Vector.svg";
 
-function HabitsToday() {
+function HabitsToday({habit}) {
+
+  const [habitCheck, setHabitCheck] = React.useState(false)
+
   return (
     <ContainerHabit>
       <TextHabit>
-        <TitleHabit>Ler 1 Capítulo de livro</TitleHabit>
+        <TitleHabit>{habit ? habit.name : ''}</TitleHabit>
         <div>
           <div>
             <NormalText>Sequência atual:</NormalText>
@@ -18,7 +21,7 @@ function HabitsToday() {
           </div>
         </div>
       </TextHabit>
-      <CheckHabit>
+      <CheckHabit onClick={() => setHabitCheck(!habitCheck)} status={habitCheck}>
         <Check src={check} />
       </CheckHabit>
     </ContainerHabit>
@@ -35,7 +38,7 @@ const ContainerHabit = styled.div`
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
-  background-color: #F2F2F2;
+  background-color: #FFF;
 `;
 
 const TextDays = styled.span`
@@ -65,7 +68,7 @@ const TitleHabit = styled.div`
 const Check = styled.img``;
 
 const CheckHabit = styled.div`
-  background-color: #8FC549;
+  background-color: ${props => props.status ? '#8FC549' : '#F2F2F2'};
   height: 69px;
   width: 69px;
   border-radius: 5px;
