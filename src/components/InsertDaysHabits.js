@@ -2,9 +2,11 @@ import React from "react";
 import styled from "styled-components";
 
 function InsertDaysHabits({ children, day,setDaysHabits, daysHabits }) {
-  const [selected, setSelected] = React.useState(false);
+  const [selected, setSelected] = React.useState(daysHabits.includes(day));
+
 
   function addDaysHabits(numberDay){
+
     if(!selected){
       setDaysHabits([...daysHabits, numberDay])
       setSelected(true)

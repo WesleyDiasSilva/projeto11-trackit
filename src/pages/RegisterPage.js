@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
 import Button from '../components/Button'
 import DontHaveAccount from '../components/DontHaveAccount'
 import Form from '../components/Form'
@@ -15,6 +16,7 @@ function RegisterPage() {
   const [password, setPassword] = React.useState('')
   const [name, setName] = React.useState('')
   const [image, setImage] = React.useState('')
+  const [error, setError] = React.useState(undefined)
 
   const navigate = useNavigate()
 
@@ -30,12 +32,17 @@ function RegisterPage() {
     axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up", body)
     .then(res => {
       navigate('/')
-      console.log(res)
       setInput(false)
     })
     .catch(err => {
-      alert('Aqui vai uma notificação para o usuário!')
-      console.log(err.response.data)
+      if(err.response.data.details.length > 0){
+        setError('Por favor, preencha todos os campos corretamente!');
+      }else{
+        setError('No momento não foi possível realizar o seu cadastro, tente novamente mais tarde!');
+      }
+      setTimeout(() => {
+        setError(undefined)
+      }, 3000)
       setInput(false)
     })
   }
@@ -51,6 +58,7 @@ function RegisterPage() {
           <Input value={image} setValue={setImage} status={input} type='text' placeholder='Foto'/>
           <Button onClick={register}>Cadastrar</Button>
         </Form>
+        {error && <MessageError>{error}</MessageError>}
         <Link to='/'>
           <DontHaveAccount>
             Já tem uma conta? Faça login!
@@ -62,3 +70,11 @@ function RegisterPage() {
 }
 
 export default RegisterPage
+
+const MessageError = styled.div`
+  text-align: center;
+  font-family: 'Lexend Deca';
+  font-size: 16px;
+  color: #E75766;
+  margin-bottom: 10px;
+`

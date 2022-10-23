@@ -15,6 +15,9 @@ const InputStyle = styled.input`
   height: 45px;
   border-radius: 5px;
   border: solid 1px #D4D4D4;
+  color: #666666;
+  font-family: 'Lexend Deca';
+  font-size: 19px;
   &::placeholder{
     color: #DBDBDB;
     font-family: sans-serif;

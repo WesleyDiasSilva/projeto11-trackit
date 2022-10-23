@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import styled from "styled-components";
 import { STYLES } from "../constants/styles";
 import Navbar from "../components/Navbar";
@@ -8,13 +8,20 @@ import { UserContext } from "../Contexts/UserContext";
 import InsertHabits from "../components/InsertHabits";
 import axios from "axios";
 import MyHabit from "../components/MyHabit";
+import { ProgressContext } from "../Contexts/ProgressContext";
 
 function HabitsPage() {
+
+  const [nameHabit, setNameHabit] = React.useState('')
+  const [daysHabit, setDaysHabit] = React.useState([])
   const [inputHidden, setInputHidden] = React.useState(true);
   const [habits, setHabits] = React.useState([]);
   const User = React.useContext(UserContext);
   const [newHabit, setNewHabit] = React.useState("");
   const [modal, setModal] = React.useState({status:false, id: ''});
+
+
+  const Progress = useContext(ProgressContext)
 
   useEffect(() => {
     axios
@@ -37,7 +44,13 @@ function HabitsPage() {
       headers: { Authorization: "Bearer " + User.user.user.token }
     })
     .then(res => {
-      console.log(res)
+      axios
+      .get(
+        "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today",
+        {
+          headers: { Authorization: "Bearer " + User.user.user.token },
+        }
+      ).then(res => Progress.setProgress(res.data))
       setNewHabit(modal.id)
     })
     .catch(err => console.log(err))
@@ -77,6 +90,10 @@ function HabitsPage() {
         </ContainerHeaderHabits>
         {!inputHidden ? (
           <InsertHabits
+            nameHabit={nameHabit}
+            setNameHabit={setNameHabit}
+            daysHabits={daysHabit}
+            setDaysHabits={setDaysHabit}
             setNewHabit={setNewHabit}
             setInputHidden={setInputHidden}
           />

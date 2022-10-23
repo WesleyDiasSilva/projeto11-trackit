@@ -33,4 +33,5 @@ const ButtonStyle = styled.button`
   color: ${props => props.styles.color};
   font-family: ${props => props.styles.fontFamily};
   font-size: ${props => props.styles.fontSize};
+  margin-bottom: 10px;
 `

@@ -1,18 +1,24 @@
 import axios from "axios";
+import dayjs from "dayjs";
 import React from "react";
+import { Comment } from "react-loader-spinner";
 import styled from "styled-components";
+import { ProgressContext } from "../Contexts/ProgressContext";
 import { UserContext } from "../Contexts/UserContext";
 import Input from "./Input";
 import InsertDaysHabits from "./InsertDaysHabits";
 
 
-function InsertHabits({ setInputHidden, days, setNewHabit }) {
+
+
+function InsertHabits({ nameHabit, setNameHabit, daysHabits, setDaysHabits, setInputHidden,  setNewHabit }) {
 
   const User = React.useContext(UserContext)
+  const Progress = React.useContext(ProgressContext)
 
-  const [nameHabit, setNameHabit] = React.useState("");
-  const [daysHabits, setDaysHabits] = React.useState([]);
+  const [loading, setLoading] = React.useState(false)
   const [controls, setControls] = React.useState(false);
+  const [messageError, setMessageError] = React.useState('')
 
   const bodyPostHabit = {
     name: nameHabit,
@@ -21,24 +27,58 @@ function InsertHabits({ setInputHidden, days, setNewHabit }) {
 
   function registerHabit() {
     setControls(true)
+    if(nameHabit === '' && daysHabits.length === 0){
+      setMessageError('Por favor, preencha o nome e os dias do hábito!')
+    setControls(false)
+      return;
+    }else if(nameHabit === ''){
+      setMessageError('Por favor, preencha o nome do hábito')
+      setControls(false)
+      return;
+    }else if(daysHabits.length === 0){
+      setMessageError('Por favor, preencha os dias do hábito')
+      setControls(false)
+      return;
+    }
+    setLoading(true)
     axios.post(
       "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", bodyPostHabit, {headers: {Authorization: 'Bearer ' + User.user.user.token}}
     )
     .then((res) => {
-      console.log(res)
+      setLoading(false)
+      axios
+      .get(
+        "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today",
+        {
+          headers: { Authorization: "Bearer " + User.user.user.token },
+        }
+      ).then(res => Progress.setProgress(res.data))
       setNewHabit(nameHabit)
+      setInputHidden(true)
+      setControls(false)
+      setNameHabit('')
+      setDaysHabits([])
     }
       )
     .catch((err) => {
       console.log(err)
+      setLoading(false)
+        setMessageError('Desculpe, tente novamente mais tarde!')  
+      setControls(false)
     })
+
+  }
+
+  function cancelInsert(){
+    setLoading(false)
     setInputHidden(true)
-    setControls(false)
+    setNameHabit(nameHabit)
+    setDaysHabits([...daysHabits])
   }
 
   return (
     <ContainerInsertHabits>
-      <Input status={controls} setValue={setNameHabit} placeholder="Nome do Hábito" />
+      <Input value={nameHabit} status={controls} setValue={setNameHabit} placeholder="Nome do Hábito" />
       <ContainerDays>
         <InsertDaysHabits
           setDaysHabits={setDaysHabits}
@@ -90,17 +130,37 @@ function InsertHabits({ setInputHidden, days, setNewHabit }) {
           S
         </InsertDaysHabits>
         <ControlsInsert>
-          <CancelInsert  onClick={() => setInputHidden(true)}>
+          <CancelInsert  onClick={cancelInsert}>
             Cancelar
           </CancelInsert>
-          <SaveInsert disabled={controls} onClick={registerHabit}>Salvar</SaveInsert>
+          <SaveInsert disabled={controls} onClick={registerHabit}>
+          {loading ? <Comment
+          visible={true}
+          height="37"
+          width="70"
+          ariaLabel="comment-loading"
+          wrapperStyle={{}}
+          wrapperClass="comment-wrapper"
+          color="#fff"
+          backgroundColor="#52B6FF"
+        /> : 'Salvar'}
+            </SaveInsert>
         </ControlsInsert>
       </ContainerDays>
+      <MessageError>{messageError}</MessageError>
     </ContainerInsertHabits>
   );
 }
 
 export default InsertHabits;
+
+const MessageError = styled.span`
+  font-family: 'Lexend Deca';
+  font-size: 15px;
+  margin-top: 5px;
+  margin-left: 5px;
+  color: #c71508;
+`
 
 const ContainerInsertHabits = styled.div`
   height: 180px;

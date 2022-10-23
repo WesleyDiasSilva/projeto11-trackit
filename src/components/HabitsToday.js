@@ -1,10 +1,44 @@
+import axios from "axios";
 import React from "react";
 import styled from "styled-components";
 import check from "../assets/imgs/Vector.svg";
+import { UserContext } from "../Contexts/UserContext";
 
-function HabitsToday({habit}) {
 
-  const [habitCheck, setHabitCheck] = React.useState(false)
+
+function HabitsToday({habit, setHabitsChecked, habitsChecked, updateHabit, setUpdateHabit}) {
+
+  const User = React.useContext(UserContext)
+
+  const [habitCheck, setHabitCheck] = React.useState(habit.done)
+
+  if(habitCheck){
+    // setHabitsChecked([...habitsChecked, habit.id])
+  }
+
+  function checkHabit(){
+    
+    if(!habitCheck){
+      axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/check`, {}, {
+        headers: { Authorization: "Bearer " + User.user.user.token },
+      })
+      .then(res => {
+        setHabitsChecked([...habitsChecked, habit.id])
+        setUpdateHabit(!updateHabit)
+      })
+      .catch(err => console.log(err.response))
+    }else{
+      axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}/uncheck`, {}, {
+        headers: { Authorization: "Bearer " + User.user.user.token },
+      })
+      .then(res => {
+        setHabitsChecked(habitsChecked.filter((h) => h !== habit.id))
+        setUpdateHabit(!updateHabit)
+      })
+      .catch(err => console.log(err.response))
+    }
+    setHabitCheck(!habitCheck)
+  }
 
   return (
     <ContainerHabit>
@@ -12,16 +46,16 @@ function HabitsToday({habit}) {
         <TitleHabit>{habit ? habit.name : ''}</TitleHabit>
         <div>
           <div>
-            <NormalText>Sequência atual:</NormalText>
-            <TextDays> 3 dias</TextDays>
+            <NormalText>Sequência atual: </NormalText>
+            <TextDays check={habitCheck}>{habit.currentSequence}</TextDays>
           </div>
           <div>
-            <NormalText>Seu recorde:</NormalText> 
-            <TextDays> 5 dias</TextDays>
+            <NormalText>Seu recorde: </NormalText> 
+            <TextDays check={habit.currentSequence >= habit.highestSequence && habit.currentSequence !== 0}>{habit.highestSequence}</TextDays>
           </div>
         </div>
       </TextHabit>
-      <CheckHabit onClick={() => setHabitCheck(!habitCheck)} status={habitCheck}>
+      <CheckHabit onClick={checkHabit} status={habitCheck}>
         <Check src={check} />
       </CheckHabit>
     </ContainerHabit>
@@ -44,7 +78,7 @@ const ContainerHabit = styled.div`
 const TextDays = styled.span`
   font-family: 'Lexend Deca';
   font-size: 12px;
-  color: #8FC549;
+  color: ${props => props.check ? "#8FC549" : "#666"};
 `;
 
 const TextHabit = styled.div`

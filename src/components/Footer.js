@@ -5,32 +5,42 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { Link } from 'react-router-dom'
 
+import { ProgressContext } from "../Contexts/ProgressContext";
+
+
 function Footer() {
 
-  const percentage = 95;
+  const Progress = React.useContext(ProgressContext)
 
-
+  function porcentProgress(){
+    if(Progress.progress){
+      const allHabits = Progress.progress.length;
+      const habitsOk = Progress.progress.filter((h) => h.done === true).length;
+      const result = (habitsOk / allHabits * 100);
+      return result;
+    }
+    return 70;
+  }
 
   return (
     <FooterStyle>
-      <Link to='/habitos'>
+      <StyledLink to='/habitos'>
         <OptionsFooter styles={STYLES.button}>
-          
             Hábitos
-          
         </OptionsFooter>
-        </Link>
+        </StyledLink>
       
       <ContainerProgressBar>
         <Link to='/hoje'>
           <ProgressBar>
-            <CircularProgressbar value={68} text='Hoje'/>
+            <CircularProgressbar backgroundPadding={5} background styles={buildStyles({
+          backgroundColor: "#3e98c7", textColor: '#fff',pathColor: '#fff', trailColor: 'transparent'})} value={porcentProgress()} text='Hoje'/>
           </ProgressBar>
         </Link>
       </ContainerProgressBar>
-      <Link to='/historico'>
+      <StyledLink to='/historico'>
         <OptionsFooter styles={STYLES.button}>Histórico</OptionsFooter>
-        </Link>
+        </StyledLink>
     </FooterStyle>
   );
 }
@@ -57,11 +67,16 @@ const FooterStyle = styled.footer`
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+  text-decoration: none;
 `;
 
 const OptionsFooter = styled.span`
   font-family: ${(props) => props.styles.fontFamily};
   font-size: 17px;
   color: ${(props) => props.styles.background};
+  text-decoration: none;
+`;
+
+const StyledLink  = styled(Link)`
   text-decoration: none;
 `;
